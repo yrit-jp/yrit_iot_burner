@@ -1,0 +1,16 @@
+/node_modules
+/web/modules
+/web/firmware/*
+
+!/web/firmware/.gitkeep
+/web/styles/animate.css
+/web/firmware.json
+/electron/modules
+
+.env
+out/
+
+/.vite
+/dist
+/LICENSES.third-party-list.txt
+/web/LICENSES.third-party.txt

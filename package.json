@@ -1,0 +1,63 @@
+{
+  "name": "yrit_iot_burner",
+  "version": "1.0.0",
+  "description": "YRIT IoT burner for web",
+  "main": ".vite/build/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "npm run setup-bossa-web && patch-package",
+    "setup-bossa-web": "npm run init-bossa-web && npm run build-bossa-web && npm run copy-modules",
+    "init-bossa-web": "git submodule update --init && cd bossa-web && npm i",
+    "build-bossa-web": "cd bossa-web && npm run build && npm run patch",
+    "copy-modules:clean": "node -e \"require('fs').rmSync('./web/modules/bossa-web', {recursive: true, force: true})\"",
+    "copy-modules:dist": "node -e \"require('fs').cpSync('./bossa-web/dist', './web/modules/bossa-web/dist', {recursive: true})\"",
+    "copy-modules:license": "node -e \"require('fs').cpSync('./bossa-web/LICENSE', './web/modules/bossa-web/LICENSE')\"",
+    "copy-modules:readme": "node -e \"require('fs').cpSync('./bossa-web/README.md', './web/modules/bossa-web/README.md')\"",
+    "copy-modules:package": "node -e \"require('fs').cpSync('./bossa-web/package.json', './web/modules/bossa-web/package.json')\"",
+    "copy-modules": "npm run copy-modules:clean && npm run copy-modules:dist && npm run copy-modules:license && npm run copy-modules:readme && npm run copy-modules:package",
+    "web:dev": "vite --config vite_configs/web/vite.config.js",
+    "web:build": "vite build --config vite_configs/web/vite.config.js",
+    "web:preview": "npm run web:build && vite preview --config vite_configs/web/vite.config.js",
+    "electron:start": "electron-forge start",
+    "electron:package": "electron-forge package",
+    "electron:make": "electron-forge make",
+    "cc:list": "license-checker-rseidelsohn --plainVertical --production --clarificationsFile ./custom_license_info.json --out ./LICENSES.third-party-list.txt",
+    "cc:summary": "license-checker-rseidelsohn --plainVertical --production --summary --clarificationsFile ./custom_license_info.json --out ./LICENSES.third-party-summary.txt"
+  },
+  "author": "takkaO",
+  "license": "YRIT_Software_License_v1.0",
+  "devDependencies": {
+    "@electron-forge/cli": "7.10.2",
+    "@electron-forge/maker-deb": "7.10.2",
+    "@electron-forge/maker-rpm": "7.10.2",
+    "@electron-forge/maker-squirrel": "7.10.2",
+    "@electron-forge/maker-zip": "7.10.2",
+    "@electron-forge/plugin-auto-unpack-natives": "7.10.2",
+    "@electron-forge/plugin-fuses": "7.10.2",
+    "@electron-forge/plugin-vite": "7.10.2",
+    "@electron/fuses": "1.8.0",
+    "electron": "39.2.3",
+    "electron-packager-languages": "0.6.0",
+    "license-checker-rseidelsohn": "4.4.2",
+    "patch-package": "8.0.1",
+    "vite": "7.2.2",
+    "vite-plugin-static-copy": "3.1.4"
+  },
+  "volta": {
+    "node": "22.14.0",
+    "npm": "11.2.0"
+  },
+  "dependencies": {
+    "@alpinejs/csp": "3.15.1",
+    "animate.css": "4.1.1",
+    "bootstrap": "5.3.8",
+    "bootstrap-icons": "1.13.1",
+    "bossa-web": "0.9.7",
+    "crypto-es": "3.1.2",
+    "electron-squirrel-startup": "1.0.1",
+    "esptool-js": "0.5.7",
+    "marked": "17.0.0",
+    "pathe": "2.0.3",
+    "sweetalert2": "11.26.3"
+  }
+}

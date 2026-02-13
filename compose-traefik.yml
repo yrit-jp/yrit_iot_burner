@@ -8,6 +8,7 @@ services:
     image: nginx:1.27.0
     volumes:
       - ./dist/web:/usr/share/nginx/html
+      - ./nginx/custom-mime.conf:/etc/nginx/conf.d/custom-mime.conf
     tty: true
     stdin_open: true
     restart: unless-stopped

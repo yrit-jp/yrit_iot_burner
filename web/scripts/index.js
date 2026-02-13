@@ -54,7 +54,7 @@ else {
 }
 
 // 実行環境に応じてファームウェア読み込みパスを調整
-let g_FirmwareRootPath = "./"
+let g_FirmwareRootPath = window.location.href;
 if (window.inElectronPlatform) {
 	g_FirmwareRootPath = await window.api.returnFirmwareRootPath()
 }
@@ -89,7 +89,12 @@ document.addEventListener('alpine:init', () => {
 						`firmware/firmware.json`
 					].join("");
 				} else {
-					return resolve(g_FirmwareRootPath, "firmware/firmware.json");
+					if (window.inElectronPlatform) {
+						return resolve(g_FirmwareRootPath, "firmware/firmware.json");
+					}
+					else {
+						return new URL("firmware/firmware.json", g_FirmwareRootPath).href;
+					}
 				}
 			})();
 
@@ -116,7 +121,12 @@ document.addEventListener('alpine:init', () => {
 					].join("");
 				} else {
 					const p = `./firmware/${selectedDeviceName}/${selectedFirmware}/CHANGELOG.md`;
-					return resolve(g_FirmwareRootPath, p);
+					if (window.inElectronPlatform) {
+						return resolve(g_FirmwareRootPath, p);
+					}
+					else {
+						return new URL(p, g_FirmwareRootPath).href;
+					}
 				}
 			})();
 
@@ -408,7 +418,12 @@ document.addEventListener('alpine:init', () => {
 					].join("");
 				} else {
 					const p = `./firmware/${this.selectedDeviceName}/${this.selectedFirmware}/${this.selectedVersion}/${this.selectedFirmware}.ino.bootloader.bin`;
-					return resolve(g_FirmwareRootPath, p)
+					if (window.inElectronPlatform) {
+						return resolve(g_FirmwareRootPath, p);
+					}
+					else {
+						return new URL(p, g_FirmwareRootPath).href;
+					}
 				}
 			})();
 			const relPartitionsUrl = (() => {
@@ -423,7 +438,12 @@ document.addEventListener('alpine:init', () => {
 					].join("");
 				} else {
 					const p = `./firmware/${this.selectedDeviceName}/${this.selectedFirmware}/${this.selectedVersion}/${this.selectedFirmware}.ino.partitions.bin`;
-					return resolve(g_FirmwareRootPath, p)
+					if (window.inElectronPlatform) {
+						return resolve(g_FirmwareRootPath, p);
+					}
+					else {
+						return new URL(p, g_FirmwareRootPath).href;
+					}
 				}
 			})();
 			const relMainBinaryUrl = (() => {
@@ -438,7 +458,12 @@ document.addEventListener('alpine:init', () => {
 					].join("");
 				} else {
 					const p = `./firmware/${this.selectedDeviceName}/${this.selectedFirmware}/${this.selectedVersion}/${this.selectedFirmware}.ino.bin`;
-					return resolve(g_FirmwareRootPath, p)
+					if (window.inElectronPlatform) {
+						return resolve(g_FirmwareRootPath, p);
+					}
+					else {
+						return new URL(p, g_FirmwareRootPath).href;
+					}
 				}
 			})();
 			const relBootApp0Url = (() => {
@@ -453,7 +478,12 @@ document.addEventListener('alpine:init', () => {
 					].join("");
 				} else {
 					const p = `./firmware/${this.selectedDeviceName}/${this.selectedFirmware}/${this.selectedVersion}/boot_app0.bin`;
-					return resolve(g_FirmwareRootPath, p)
+					if (window.inElectronPlatform) {
+						return resolve(g_FirmwareRootPath, p);
+					}
+					else {
+						return new URL(p, g_FirmwareRootPath).href;
+					}
 				}
 			})();
 
@@ -632,7 +662,12 @@ document.addEventListener('alpine:init', () => {
 					].join("");
 				} else {
 					const p = `./firmware/${this.selectedDeviceName}/${this.selectedFirmware}/${this.selectedVersion}/${this.selectedFirmware}.ino.bin`;
-					return resolve(g_FirmwareRootPath, p)
+					if (window.inElectronPlatform) {
+						return resolve(g_FirmwareRootPath, p);
+					}
+					else {
+						return new URL(p, g_FirmwareRootPath).href;
+					}
 				}
 			})();
 

@@ -14,7 +14,8 @@
       "v4.4",
       "v4.5",
       "v4.6",
-      "v4.7"
+      "v4.7",
+      "v5.0"
     ],
     "IoT_Device_Beta": [
       "v5.0_Beta6"
@@ -24,6 +25,9 @@
     "FactoryTest": [
       "v1.0_CellPhone",
       "v1.0_UnitTest"
+    ],
+    "IoT_Device": [
+      "v5.0"
     ],
     "IoT_Device_Beta": [
       "v5.0_Beta6"
@@ -41,7 +45,8 @@
       "v4.4",
       "v4.5",
       "v4.6",
-      "v4.7"
+      "v4.7",
+      "v5.0"
     ],
     "IoT_Device_Beta": [
       "v5.0_Beta6"
@@ -50,6 +55,9 @@
   "m5stack_atom_s3r": {
     "FactoryTest": [
       "v1.0"
+    ],
+    "IoT_Device": [
+      "v5.0"
     ],
     "IoT_Device_Beta": [
       "v5.0_Beta6"
@@ -73,7 +81,8 @@
       "v4.4",
       "v4.5",
       "v4.6",
-      "v4.7"
+      "v4.7",
+      "v5.0"
     ],
     "IoT_Device_Beta": [
       "v5.0_Beta6"
@@ -101,7 +110,8 @@
       "v4.4",
       "v4.5",
       "v4.6",
-      "v4.7"
+      "v4.7",
+      "v5.0"
     ],
     "IoT_Device_Beta": [
       "v5.0_Beta6"
@@ -117,7 +127,8 @@
       "v4.4",
       "v4.5",
       "v4.6",
-      "v4.7"
+      "v4.7",
+      "v5.0"
     ],
     "IoT_Device_Beta": [
       "v5.0_Beta6"
@@ -126,6 +137,9 @@
   "m5stack_core_s3_se": {
     "FactoryTest": [
       "v1.0"
+    ],
+    "IoT_Device": [
+      "v5.0"
     ],
     "IoT_Device_Beta": [
       "v5.0_Beta6"
@@ -146,7 +160,8 @@
       "v4.4",
       "v4.5",
       "v4.6",
-      "v4.7"
+      "v4.7",
+      "v5.0"
     ],
     "IoT_Device_Beta": [
       "v5.0_Beta6"
@@ -164,7 +179,8 @@
       "v4.4",
       "v4.5",
       "v4.6",
-      "v4.7"
+      "v4.7",
+      "v5.0"
     ],
     "IoT_Device_Beta": [
       "v5.0_Beta6"
@@ -187,7 +203,8 @@
       "v4.4",
       "v4.5",
       "v4.6",
-      "v4.7"
+      "v4.7",
+      "v5.0"
     ],
     "IoT_Device_Beta": [
       "v5.0_Beta6"
@@ -196,6 +213,9 @@
   "m5stick_c_plus2": {
     "FactoryTest": [
       "v1.0"
+    ],
+    "IoT_Device": [
+      "v5.0"
     ],
     "IoT_Device_Beta": [
       "v5.0_Beta6"
@@ -215,7 +235,8 @@
       "v4.4",
       "v4.5",
       "v4.6",
-      "v4.7"
+      "v4.7",
+      "v5.0"
     ],
     "IoT_Device_Beta": [
       "v5.0_Beta6"

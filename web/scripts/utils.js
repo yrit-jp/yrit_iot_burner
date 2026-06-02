@@ -1,10 +1,4 @@
 /* ******************************************************************* 
-Copyright (C) 2024 takkaO
-
-This program is licensed under the Affero General Public License (AGPL) v3.0.
-You can redistribute it and/or modify it under the terms of the AGPL v3.0.
-See the LICENSE file for details.
-
 Author: takkaO
 ******************************************************************* */
 

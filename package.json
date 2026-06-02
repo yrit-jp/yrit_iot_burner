@@ -43,9 +43,9 @@
     "vite": "7.2.2",
     "vite-plugin-static-copy": "3.1.4"
   },
-  "volta": {
-    "node": "22.14.0",
-    "npm": "11.2.0"
+  "engines": {
+    "node": "22.22.3",
+    "npm": "10.9.8"
   },
   "dependencies": {
     "@alpinejs/csp": "3.15.1",
@@ -57,6 +57,7 @@
     "electron-squirrel-startup": "1.0.1",
     "esptool-js": "0.5.7",
     "marked": "17.0.0",
+    "nrfutil-web": "1.0.0",
     "pathe": "2.0.3",
     "sweetalert2": "11.26.3"
   }

@@ -38,8 +38,6 @@ jobs:
             destination: ${{ needs.prepare.outputs.destination_branch }}
           - source: firmware
             destination: firmware
-          - source: gh-pages
-            destination: gh-pages
       # エラーが発生しても他のブランチの同期を続行
       fail-fast: false
 

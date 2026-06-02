@@ -19,6 +19,16 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: path.resolve(projectRoot, "web/index.html")
+      },
+      output: {
+        manualChunks(id) {
+          if (id.includes('esptool-js') || id.includes('bossa-web') || id.includes('nrfutil-web')) {
+            return 'vendor-flash';
+          }
+          if (id.includes('node_modules')) {
+            return 'vendor';
+          }
+        }
       }
     }
   },

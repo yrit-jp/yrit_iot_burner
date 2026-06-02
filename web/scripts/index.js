@@ -16,6 +16,7 @@ import * as BossaWeb from "../modules/bossa-web/dist/bossa-web.js";
 import * as EspTool from "esptool-js";
 import * as Utils from "./utils.js";
 import * as FlashParameters from "./flashParameters.js";
+import { enterDfuMode, performDfu } from "nrfutil-web";
 import { MD5, Latin1 } from 'crypto-es';
 import { marked } from "marked";
 import { resolve } from "pathe";
@@ -264,6 +265,10 @@ document.addEventListener('alpine:init', () => {
 			switch (this.selectedDeviceName) {
 				case "wio_terminal": {
 					errNo = await this.writeToWioTerminal();
+					break;
+				}
+				case "wio_tracker_1110": {
+					errNo = await this.writeToWioTracker1110();
 					break;
 				}
 				case "esp32_devkit":
@@ -781,6 +786,119 @@ document.addEventListener('alpine:init', () => {
 				console.log(err);
 			}
 
+			await Utils.wait(2000);
+			return FLASH_ERROR.NONE;
+		},
+
+		async writeToWioTracker1110() {
+			// アプリモードのポートを選択
+			let appPort = await navigator.serial.requestPort(
+			).catch((err) => {
+				console.log(err);
+			});
+
+			if (appPort === undefined) {
+				return FLASH_ERROR.CANCELED;
+			}
+			this.flashWriting = true;
+			window.addEventListener("beforeunload", windowUnloadHandler);
+
+			// 1200bps タッチで DFU モードへ移行
+			this.writingProgressMessage = "DFUモードへ移行中";
+			try {
+				await enterDfuMode(appPort);
+			} catch (err) {
+				console.log(err);
+				try { await appPort.close(); } catch { /* already closed */ }
+				return FLASH_ERROR.OPEN_SERIAL_PORT;
+			}
+			await Utils.wait(2000);
+
+			// DFU ポートの選択を促す
+			let userReady = await Swal.fire({
+				title: "DFUモードへ移行しました",
+				text: "デバイスがDFUモードに切り替わりました。OKを押してDFUポートを選択してください。",
+				icon: "info",
+				confirmButtonText: "OK",
+				showCancelButton: true,
+				cancelButtonText: "キャンセル"
+			});
+
+			if (userReady.isConfirmed === false) {
+				return FLASH_ERROR.CANCELED;
+			}
+
+			let dfuPort = await navigator.serial.requestPort(
+			).catch((err) => {
+				console.log(err);
+			});
+
+			if (dfuPort === undefined) {
+				return FLASH_ERROR.CANCELED;
+			}
+
+			this.writingProgressMessage = "ファームウェア取得中";
+
+			// ファームウェア ZIP の取得
+			const firmwareUrl = (() => {
+				if (window.location.hostname.endsWith("github.io")) {
+					const GITHUB_USER = window.location.hostname.split(".")[0];
+					const GITHUB_REPO = window.location.pathname.split("/")[1];
+					const BRANCH = "firmware";
+					return [
+						`https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${BRANCH}/`,
+						`firmware/${this.selectedDeviceName}/${this.selectedFirmware}/${this.selectedVersion}/${this.selectedFirmware}.ino.zip`
+					].join("");
+				} else {
+					const p = `./firmware/${this.selectedDeviceName}/${this.selectedFirmware}/${this.selectedVersion}/${this.selectedFirmware}.ino.zip`;
+					if (window.inElectronPlatform) {
+						return resolve(g_FirmwareRootPath, p);
+					} else {
+						return new URL(p, g_FirmwareRootPath).href;
+					}
+				}
+			})();
+
+			let response = await fetch(firmwareUrl).catch((err) => {
+				console.log(err);
+				return undefined;
+			});
+
+			if (response === undefined || !response.ok) {
+				return FLASH_ERROR.FW_FETCH;
+			}
+
+			const zipData = await response.arrayBuffer();
+			this.writingProgress = 2;
+			this.writingProgressMessage = "初期化中";
+
+			// DFU 書き込み
+			try {
+				await performDfu(dfuPort, zipData, {
+					onProgress: ({ percent, message }) => {
+						console.log(`${percent}% - ${message}`);
+						if (message.includes("Erasing")) {
+							this.writingProgressMessage = "フラッシュ消去中";
+							this.writingProgress = 5;
+						} else if (message.includes("firmware data")) {
+							this.writingProgressMessage = "プログラム書き込み中";
+							this.writingProgress = percent < 5 ? 5 : Math.trunc(percent);
+						}
+					}
+				});
+			} catch (err) {
+				console.log(err);
+				try { await dfuPort.close(); } catch { /* already closed */ }
+				return FLASH_ERROR.FAILED_WRITE;
+			}
+
+			// 書き込み後にポートをクローズ
+			// performDfu が内部でポートを閉じるため、既に閉じられている場合は無視する
+			try {
+				await dfuPort.close();
+			} catch { /* already closed by performDfu */ }
+
+			this.writingProgress = 100;
 			await Utils.wait(2000);
 			return FLASH_ERROR.NONE;
 		},

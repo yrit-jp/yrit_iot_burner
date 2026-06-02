@@ -241,5 +241,10 @@
     "IoT_Device_Beta": [
       "v5.0_Beta6"
     ]
+  },
+  "wio_tracker_1110": {
+    "Default_Firmware": [
+      "v1.0"
+    ]
   }
 }

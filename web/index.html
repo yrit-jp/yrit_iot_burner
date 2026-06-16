@@ -181,6 +181,14 @@
             </div>
           </div>
 
+          <div class="btn btn-secondary card card-size" data-device_name="m5stack_unit_c6l"
+            @click="goFirmwareSelectPage">
+            <img :src="getDisplayDeviceImagePath" class="card-img-top device">
+            <div class="card-body p-0">
+              <h5 class="card-title text-center" x-text="getDisplayDeviceNameText"></h5>
+            </div>
+          </div>
+
           <div class="btn btn-secondary card card-size" data-device_name="lilygo_t_display_s3_pro"
             @click="goFirmwareSelectPage">
             <img :src="getDisplayDeviceImagePath" class="card-img-top device">
@@ -196,7 +204,8 @@
             </div>
           </div>
 
-          <div class="btn btn-secondary card card-size" data-device_name="wio_tracker_1110" @click="goFirmwareSelectPage">
+          <div class="btn btn-secondary card card-size" data-device_name="wio_tracker_1110"
+            @click="goFirmwareSelectPage">
             <img :src="getDisplayDeviceImagePath" class="card-img-top device">
             <div class="card-body p-0">
               <h5 class="card-title text-center" x-text="getDisplayDeviceNameText"></h5>

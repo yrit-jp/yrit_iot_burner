@@ -186,6 +186,21 @@ function getParameters(deviceName) {
 			}
 			return parameters;
 		}
+		case "m5stack_unit_c6l": {
+			const parameters = {
+				offset: {
+					bootloader: 0x0,
+					partitions: 0x8000,
+					boot_app0: 0xe000,
+					main: 0x10000
+				},
+				flashSize: "keep",
+				flashMode: "keep",
+				flashFreq: "keep",
+				baudrate: 921600,
+			}
+			return parameters;
+		}
 		default:
 			return undefined;
 	}

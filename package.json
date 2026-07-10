@@ -1,6 +1,6 @@
 {
   "name": "yrit_iot_burner",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "YRIT IoT burner for web",
   "main": ".vite/build/main.js",
   "scripts": {

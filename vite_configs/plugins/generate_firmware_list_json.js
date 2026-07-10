@@ -105,7 +105,17 @@ export function generateFirmwareListJsonPlugin(firmwareDir = "web/firmware") {
                         .map(dirent => dirent.name)
                         .sort(versionCompareTo);
 
-                    result[device][firmware] = versions;
+                    const isMerged = (() => {
+                        if (versions.length === 0) return false;
+                        const firstVersionPath = path.join(firmwarePath, versions[0]);
+                        const binFiles = fs.readdirSync(firstVersionPath)
+                            .filter(f => f.endsWith('.bin'));
+                        return binFiles.length === 1;
+                    })();
+
+                    result[device][firmware] = isMerged
+                        ? { versions, merged: true }
+                        : { versions };
                 }
             }
 

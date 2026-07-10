@@ -156,7 +156,7 @@ document.addEventListener('alpine:init', () => {
 			this.selectedFirmware = this.$el.value;
 
 			// 選択可能なバージョンをファームウェアに合わせて変更
-			this.selectableFirmwareVersion = this.firmwareInfo[this.selectedDeviceName][this.selectedFirmware];
+			this.selectableFirmwareVersion = this.firmwareInfo[this.selectedDeviceName][this.selectedFirmware].versions;
 
 			// 描画が完了してから初期選択要素を設定する
 			this.$nextTick(() => {
@@ -186,7 +186,7 @@ document.addEventListener('alpine:init', () => {
 			await this.checkChangeLog(this.selectedDeviceName, this.selectedFirmware);
 
 			// 選択可能なバージョンをファームウェアに合わせてセット
-			this.selectableFirmwareVersion = this.firmwareInfo[this.selectedDeviceName][this.selectedFirmware];
+			this.selectableFirmwareVersion = this.firmwareInfo[this.selectedDeviceName][this.selectedFirmware].versions;
 			this.selectedVersion = this.selectableFirmwareVersion.at(-1);	// 最後の要素を選択状態に
 		},
 
@@ -265,6 +265,8 @@ document.addEventListener('alpine:init', () => {
 					errNo = await this.writeToWioTracker1110();
 					break;
 				}
+				case "arduino_nesso_n1":
+				// Fallthrough
 				case "esp32_devkit":
 				// Fallthrough
 				case "m5stack_basic":
@@ -288,6 +290,10 @@ document.addEventListener('alpine:init', () => {
 				case "lilygo_t_display_s3_pro":
 				// Fallthrough
 				case "m5stack_core_s3_se":
+				// Fallthrough
+				case "m5stack_stick_s3":
+				// Fallthrough
+				case "m5stack_unit_c6l":
 					errNo = await this.writeToEsp32(parameters);
 					break;
 				default:
@@ -404,146 +410,178 @@ document.addEventListener('alpine:init', () => {
 
 			this.writingProgressMessage = "ファームウェア取得中";
 
+			const isMerged = this.firmwareInfo[this.selectedDeviceName]?.[this.selectedFirmware]?.merged ?? false;
+
 			// ファームウェアの取得
-			const relBootloaderUrl = (() => {
+			const buildUrl = (relativePath) => {
 				if (window.location.hostname.endsWith("github.io")) {
-					// For GitHub Pages
 					const GITHUB_USER = window.location.hostname.split(".")[0];
 					const GITHUB_REPO = window.location.pathname.split("/")[1];
 					const BRANCH = "firmware";
-					return [
-						`https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${BRANCH}/`,
-						`firmware/${this.selectedDeviceName}/${this.selectedFirmware}/${this.selectedVersion}/${this.selectedFirmware}.ino.bootloader.bin`
-					].join("");
-				} else {
-					const p = `./firmware/${this.selectedDeviceName}/${this.selectedFirmware}/${this.selectedVersion}/${this.selectedFirmware}.ino.bootloader.bin`;
-					if (window.inElectronPlatform) {
-						return resolve(g_FirmwareRootPath, p);
-					}
-					else {
-						return new URL(p, g_FirmwareRootPath).href;
-					}
+					return `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${BRANCH}/${relativePath}`;
 				}
-			})();
-			const relPartitionsUrl = (() => {
-				if (window.location.hostname.endsWith("github.io")) {
-					// For GitHub Pages
-					const GITHUB_USER = window.location.hostname.split(".")[0];
-					const GITHUB_REPO = window.location.pathname.split("/")[1];
-					const BRANCH = "firmware";
-					return [
-						`https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${BRANCH}/`,
-						`firmware/${this.selectedDeviceName}/${this.selectedFirmware}/${this.selectedVersion}/${this.selectedFirmware}.ino.partitions.bin`
-					].join("");
-				} else {
-					const p = `./firmware/${this.selectedDeviceName}/${this.selectedFirmware}/${this.selectedVersion}/${this.selectedFirmware}.ino.partitions.bin`;
-					if (window.inElectronPlatform) {
-						return resolve(g_FirmwareRootPath, p);
-					}
-					else {
-						return new URL(p, g_FirmwareRootPath).href;
-					}
+				if (window.inElectronPlatform) {
+					return resolve(g_FirmwareRootPath, `./${relativePath}`);
 				}
-			})();
-			const relMainBinaryUrl = (() => {
-				if (window.location.hostname.endsWith("github.io")) {
-					// For GitHub Pages
-					const GITHUB_USER = window.location.hostname.split(".")[0];
-					const GITHUB_REPO = window.location.pathname.split("/")[1];
-					const BRANCH = "firmware";
-					return [
-						`https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${BRANCH}/`,
-						`firmware/${this.selectedDeviceName}/${this.selectedFirmware}/${this.selectedVersion}/${this.selectedFirmware}.ino.bin`
-					].join("");
-				} else {
-					const p = `./firmware/${this.selectedDeviceName}/${this.selectedFirmware}/${this.selectedVersion}/${this.selectedFirmware}.ino.bin`;
-					if (window.inElectronPlatform) {
-						return resolve(g_FirmwareRootPath, p);
-					}
-					else {
-						return new URL(p, g_FirmwareRootPath).href;
-					}
+				return new URL(`./${relativePath}`, g_FirmwareRootPath).href;
+			};
+			const base = `firmware/${this.selectedDeviceName}/${this.selectedFirmware}/${this.selectedVersion}`;
+
+			let fileArray;
+			if (isMerged) {
+				// 1ファイル方式
+				const resp = await fetch(buildUrl(`${base}/${this.selectedFirmware}.bin`))
+					.catch((err) => {
+						console.log("Merged:", err); return undefined;
+					});
+				if (!resp || !resp.ok) {
+					await transport.disconnect();
+					return FLASH_ERROR.FW_FETCH;
 				}
-			})();
-			const relBootApp0Url = (() => {
-				if (window.location.hostname.endsWith("github.io")) {
-					// For GitHub Pages
-					const GITHUB_USER = window.location.hostname.split(".")[0];
-					const GITHUB_REPO = window.location.pathname.split("/")[1];
-					const BRANCH = "firmware";
-					return [
-						`https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${BRANCH}/`,
-						`firmware/${this.selectedDeviceName}/${this.selectedFirmware}/${this.selectedVersion}/boot_app0.bin`
-					].join("");
-				} else {
-					const p = `./firmware/${this.selectedDeviceName}/${this.selectedFirmware}/${this.selectedVersion}/boot_app0.bin`;
-					if (window.inElectronPlatform) {
-						return resolve(g_FirmwareRootPath, p);
+				const binary = Utils.largeBufferToString(new Uint8Array(await resp.arrayBuffer()));
+				fileArray = [{ data: binary, address: parameters.offset["bootloader"] }];
+			} else {
+				// 4ファイル方式
+				const relBootloaderUrl = (() => {
+					if (window.location.hostname.endsWith("github.io")) {
+						// For GitHub Pages
+						const GITHUB_USER = window.location.hostname.split(".")[0];
+						const GITHUB_REPO = window.location.pathname.split("/")[1];
+						const BRANCH = "firmware";
+						return [
+							`https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${BRANCH}/`,
+							`firmware/${this.selectedDeviceName}/${this.selectedFirmware}/${this.selectedVersion}/${this.selectedFirmware}.ino.bootloader.bin`
+						].join("");
+					} else {
+						const p = `./firmware/${this.selectedDeviceName}/${this.selectedFirmware}/${this.selectedVersion}/${this.selectedFirmware}.ino.bootloader.bin`;
+						if (window.inElectronPlatform) {
+							return resolve(g_FirmwareRootPath, p);
+						}
+						else {
+							return new URL(p, g_FirmwareRootPath).href;
+						}
 					}
-					else {
-						return new URL(p, g_FirmwareRootPath).href;
+				})();
+				const relPartitionsUrl = (() => {
+					if (window.location.hostname.endsWith("github.io")) {
+						// For GitHub Pages
+						const GITHUB_USER = window.location.hostname.split(".")[0];
+						const GITHUB_REPO = window.location.pathname.split("/")[1];
+						const BRANCH = "firmware";
+						return [
+							`https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${BRANCH}/`,
+							`firmware/${this.selectedDeviceName}/${this.selectedFirmware}/${this.selectedVersion}/${this.selectedFirmware}.ino.partitions.bin`
+						].join("");
+					} else {
+						const p = `./firmware/${this.selectedDeviceName}/${this.selectedFirmware}/${this.selectedVersion}/${this.selectedFirmware}.ino.partitions.bin`;
+						if (window.inElectronPlatform) {
+							return resolve(g_FirmwareRootPath, p);
+						}
+						else {
+							return new URL(p, g_FirmwareRootPath).href;
+						}
 					}
+				})();
+				const relMainBinaryUrl = (() => {
+					if (window.location.hostname.endsWith("github.io")) {
+						// For GitHub Pages
+						const GITHUB_USER = window.location.hostname.split(".")[0];
+						const GITHUB_REPO = window.location.pathname.split("/")[1];
+						const BRANCH = "firmware";
+						return [
+							`https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${BRANCH}/`,
+							`firmware/${this.selectedDeviceName}/${this.selectedFirmware}/${this.selectedVersion}/${this.selectedFirmware}.ino.bin`
+						].join("");
+					} else {
+						const p = `./firmware/${this.selectedDeviceName}/${this.selectedFirmware}/${this.selectedVersion}/${this.selectedFirmware}.ino.bin`;
+						if (window.inElectronPlatform) {
+							return resolve(g_FirmwareRootPath, p);
+						}
+						else {
+							return new URL(p, g_FirmwareRootPath).href;
+						}
+					}
+				})();
+				const relBootApp0Url = (() => {
+					if (window.location.hostname.endsWith("github.io")) {
+						// For GitHub Pages
+						const GITHUB_USER = window.location.hostname.split(".")[0];
+						const GITHUB_REPO = window.location.pathname.split("/")[1];
+						const BRANCH = "firmware";
+						return [
+							`https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${BRANCH}/`,
+							`firmware/${this.selectedDeviceName}/${this.selectedFirmware}/${this.selectedVersion}/boot_app0.bin`
+						].join("");
+					} else {
+						const p = `./firmware/${this.selectedDeviceName}/${this.selectedFirmware}/${this.selectedVersion}/boot_app0.bin`;
+						if (window.inElectronPlatform) {
+							return resolve(g_FirmwareRootPath, p);
+						}
+						else {
+							return new URL(p, g_FirmwareRootPath).href;
+						}
+					}
+				})();
+
+				let respMain = await fetch(
+					relMainBinaryUrl
+				).catch((err) => {
+					// ネットワークエラー
+					// 表示できてる時点でこのエラーは発生しないはず
+					console.log("Main: ", err);
+					return undefined;
+				});
+
+				let respBootloader = await fetch(
+					relBootloaderUrl
+				).catch((err) => {
+					// ネットワークエラー
+					// 表示できてる時点でこのエラーは発生しないはず
+					console.log("Bootloader: ", err);
+					return undefined;
+				});
+
+				let respPartitions = await fetch(
+					relPartitionsUrl
+				).catch((err) => {
+					// ネットワークエラー
+					// 表示できてる時点でこのエラーは発生しないはず
+					console.log("Partitions: ", err);
+					return undefined;
+				});
+
+				let respBootApp0 = await fetch(
+					relBootApp0Url
+				).catch((err) => {
+					// ネットワークエラー
+					// 表示できてる時点でこのエラーは発生しないはず
+					console.log("BootApp0: ", err);
+					return undefined;
+				});
+
+				if (respBootloader === undefined ||
+					respPartitions === undefined ||
+					respMain === undefined ||
+					respBootApp0 === undefined
+				) {
+					console.log("Unknown network error.");
+					await transport.disconnect();
+					//await serialPort.close();
+					return FLASH_ERROR.FW_FETCH;
 				}
-			})();
 
-			let respMain = await fetch(
-				relMainBinaryUrl
-			).catch((err) => {
-				// ネットワークエラー
-				// 表示できてる時点でこのエラーは発生しないはず
-				console.log("Main: ", err);
-				return undefined;
-			});
+				const mainBinary = Utils.largeBufferToString(new Uint8Array(await respMain.arrayBuffer()));
+				const bootloaderBinary = Utils.largeBufferToString(new Uint8Array(await respBootloader.arrayBuffer()));
+				const partitionsBinary = Utils.largeBufferToString(new Uint8Array(await respPartitions.arrayBuffer()));
+				const bootApp0_Binary = Utils.largeBufferToString(new Uint8Array(await respBootApp0.arrayBuffer()));
 
-			let respBootloader = await fetch(
-				relBootloaderUrl
-			).catch((err) => {
-				// ネットワークエラー
-				// 表示できてる時点でこのエラーは発生しないはず
-				console.log("Bootloader: ", err);
-				return undefined;
-			});
-
-			let respPartitions = await fetch(
-				relPartitionsUrl
-			).catch((err) => {
-				// ネットワークエラー
-				// 表示できてる時点でこのエラーは発生しないはず
-				console.log("Partitions: ", err);
-				return undefined;
-			});
-
-			let respBootApp0 = await fetch(
-				relBootApp0Url
-			).catch((err) => {
-				// ネットワークエラー
-				// 表示できてる時点でこのエラーは発生しないはず
-				console.log("BootApp0: ", err);
-				return undefined;
-			});
-
-			if (respBootloader === undefined ||
-				respPartitions === undefined ||
-				respMain === undefined ||
-				respBootApp0 === undefined
-			) {
-				console.log("Unknown network error.");
-				await transport.disconnect();
-				//await serialPort.close();
-				return FLASH_ERROR.FW_FETCH;
-			}
-
-			const mainBinary = Utils.largeBufferToString(new Uint8Array(await respMain.arrayBuffer()));
-			const bootloaderBinary = Utils.largeBufferToString(new Uint8Array(await respBootloader.arrayBuffer()));
-			const partitionsBinary = Utils.largeBufferToString(new Uint8Array(await respPartitions.arrayBuffer()));
-			const bootApp0_Binary = Utils.largeBufferToString(new Uint8Array(await respBootApp0.arrayBuffer()));
-
-			const fileArray = [
-				{ data: bootloaderBinary, address: parameters.offset["bootloader"] },
-				{ data: partitionsBinary, address: parameters.offset["partitions"] },
-				{ data: bootApp0_Binary, address: parameters.offset["boot_app0"] },
-				{ data: mainBinary, address: parameters.offset["main"] }
-			];
+				fileArray = [
+					{ data: bootloaderBinary, address: parameters.offset["bootloader"] },
+					{ data: partitionsBinary, address: parameters.offset["partitions"] },
+					{ data: bootApp0_Binary, address: parameters.offset["boot_app0"] },
+					{ data: mainBinary, address: parameters.offset["main"] }
+				];
+			} // end else (4ファイル方式)
 
 			this.writingProgress = 1;
 
@@ -558,19 +596,23 @@ document.addEventListener('alpine:init', () => {
 				debugLogging: false,
 				reportProgress: (fileIndex, written, total) => {
 					console.log("Progress: ", fileIndex, Math.trunc((written / total) * 100));
-					switch (fileIndex) {
-						case 0:
-							this.writingProgress = 1;
-							break;
-						case 1:
-							this.writingProgress = 1;
-							break;
-						case 2:
-							this.writingProgress = 2;
-							break;
-						default:
-							this.writingProgress = (((written / total) * 100) - 2) < 0 ? 2 : Math.trunc((written / total) * 100);
-							break;
+					if (isMerged) {
+						this.writingProgress = Math.trunc((written / total) * 100);
+					} else {
+						switch (fileIndex) {
+							case 0:
+								this.writingProgress = 1;
+								break;
+							case 1:
+								this.writingProgress = 1;
+								break;
+							case 2:
+								this.writingProgress = 2;
+								break;
+							default:
+								this.writingProgress = (((written / total) * 100) - 2) < 0 ? 2 : Math.trunc((written / total) * 100);
+								break;
+						}
 					}
 				},
 				calculateMD5Hash: (image) => {

@@ -1,250 +1,358 @@
 {
+  "arduino_nesso_n1": {
+    "FactoryTest": {
+      "versions": [
+        "v1.0"
+      ]
+    }
+  },
   "esp32_devkit": {
-    "IoT_Device": [
-      "v2.29",
-      "v3.6",
-      "v3.7",
-      "v3.8",
-      "v3.9",
-      "v3.10",
-      "v4.0",
-      "v4.1",
-      "v4.2",
-      "v4.3",
-      "v4.4",
-      "v4.5",
-      "v4.6",
-      "v4.7",
-      "v5.0"
-    ],
-    "IoT_Device_Beta": [
-      "v5.0_Beta6"
-    ]
+    "IoT_Device": {
+      "versions": [
+        "v2.29",
+        "v3.6",
+        "v3.7",
+        "v3.8",
+        "v3.9",
+        "v3.10",
+        "v4.0",
+        "v4.1",
+        "v4.2",
+        "v4.3",
+        "v4.4",
+        "v4.5",
+        "v4.6",
+        "v4.7",
+        "v5.0"
+      ]
+    },
+    "IoT_Device_Beta": {
+      "versions": [
+        "v5.0_Beta6"
+      ]
+    }
   },
   "lilygo_t_display_s3_pro": {
-    "FactoryTest": [
-      "v1.0_CellPhone",
-      "v1.0_UnitTest"
-    ],
-    "IoT_Device": [
-      "v5.0"
-    ],
-    "IoT_Device_Beta": [
-      "v5.0_Beta6"
-    ]
+    "FactoryTest": {
+      "versions": [
+        "v1.0_CellPhone",
+        "v1.0_UnitTest"
+      ]
+    },
+    "IoT_Device": {
+      "versions": [
+        "v5.0"
+      ]
+    },
+    "IoT_Device_Beta": {
+      "versions": [
+        "v5.0_Beta6"
+      ]
+    }
   },
   "m5stack_atom_s3": {
-    "FactoryTest": [
-      "v1.0"
-    ],
-    "IoT_Device": [
-      "v4.0",
-      "v4.1",
-      "v4.2",
-      "v4.3",
-      "v4.4",
-      "v4.5",
-      "v4.6",
-      "v4.7",
-      "v5.0"
-    ],
-    "IoT_Device_Beta": [
-      "v5.0_Beta6"
-    ]
+    "FactoryTest": {
+      "versions": [
+        "v1.0"
+      ]
+    },
+    "IoT_Device": {
+      "versions": [
+        "v4.0",
+        "v4.1",
+        "v4.2",
+        "v4.3",
+        "v4.4",
+        "v4.5",
+        "v4.6",
+        "v4.7",
+        "v5.0"
+      ]
+    },
+    "IoT_Device_Beta": {
+      "versions": [
+        "v5.0_Beta6"
+      ]
+    }
   },
   "m5stack_atom_s3r": {
-    "FactoryTest": [
-      "v1.0"
-    ],
-    "IoT_Device": [
-      "v5.0"
-    ],
-    "IoT_Device_Beta": [
-      "v5.0_Beta6"
-    ]
+    "FactoryTest": {
+      "versions": [
+        "v1.0"
+      ]
+    },
+    "IoT_Device": {
+      "versions": [
+        "v5.0"
+      ]
+    },
+    "IoT_Device_Beta": {
+      "versions": [
+        "v5.0_Beta6"
+      ]
+    }
   },
   "m5stack_basic": {
-    "FactoryTest": [
-      "v1.0"
-    ],
-    "IoT_Device": [
-      "v2.29",
-      "v3.6",
-      "v3.7",
-      "v3.8",
-      "v3.9",
-      "v3.10",
-      "v4.0",
-      "v4.1",
-      "v4.2",
-      "v4.3",
-      "v4.4",
-      "v4.5",
-      "v4.6",
-      "v4.7",
-      "v5.0"
-    ],
-    "IoT_Device_Beta": [
-      "v5.0_Beta6"
-    ]
+    "FactoryTest": {
+      "versions": [
+        "v1.0"
+      ]
+    },
+    "IoT_Device": {
+      "versions": [
+        "v2.29",
+        "v3.6",
+        "v3.7",
+        "v3.8",
+        "v3.9",
+        "v3.10",
+        "v4.0",
+        "v4.1",
+        "v4.2",
+        "v4.3",
+        "v4.4",
+        "v4.5",
+        "v4.6",
+        "v4.7",
+        "v5.0"
+      ]
+    },
+    "IoT_Device_Beta": {
+      "versions": [
+        "v5.0_Beta6"
+      ]
+    }
   },
   "m5stack_core2": {
-    "FactoryTest": [
-      "v1.0"
-    ],
-    "Fake_NTP_Server": [
-      "v2.0",
-      "v3.2"
-    ],
-    "IoT_Device": [
-      "v2.29",
-      "v3.6",
-      "v3.7",
-      "v3.8",
-      "v3.9",
-      "v3.10",
-      "v4.0",
-      "v4.1",
-      "v4.2",
-      "v4.3",
-      "v4.4",
-      "v4.5",
-      "v4.6",
-      "v4.7",
-      "v5.0"
-    ],
-    "IoT_Device_Beta": [
-      "v5.0_Beta6"
-    ]
+    "FactoryTest": {
+      "versions": [
+        "v1.0"
+      ]
+    },
+    "Fake_NTP_Server": {
+      "versions": [
+        "v2.0",
+        "v3.2"
+      ]
+    },
+    "IoT_Device": {
+      "versions": [
+        "v2.29",
+        "v3.6",
+        "v3.7",
+        "v3.8",
+        "v3.9",
+        "v3.10",
+        "v4.0",
+        "v4.1",
+        "v4.2",
+        "v4.3",
+        "v4.4",
+        "v4.5",
+        "v4.6",
+        "v4.7",
+        "v5.0"
+      ]
+    },
+    "IoT_Device_Beta": {
+      "versions": [
+        "v5.0_Beta6"
+      ]
+    }
   },
   "m5stack_core_s3": {
-    "FactoryTest": [
-      "v1.0"
-    ],
-    "IoT_Device": [
-      "v4.2",
-      "v4.3",
-      "v4.4",
-      "v4.5",
-      "v4.6",
-      "v4.7",
-      "v5.0"
-    ],
-    "IoT_Device_Beta": [
-      "v5.0_Beta6"
-    ]
+    "FactoryTest": {
+      "versions": [
+        "v1.0"
+      ]
+    },
+    "IoT_Device": {
+      "versions": [
+        "v4.2",
+        "v4.3",
+        "v4.4",
+        "v4.5",
+        "v4.6",
+        "v4.7",
+        "v5.0"
+      ]
+    },
+    "IoT_Device_Beta": {
+      "versions": [
+        "v5.0_Beta6"
+      ]
+    }
   },
   "m5stack_core_s3_se": {
-    "FactoryTest": [
-      "v1.0"
-    ],
-    "IoT_Device": [
-      "v5.0"
-    ],
-    "IoT_Device_Beta": [
-      "v5.0_Beta6"
-    ]
+    "FactoryTest": {
+      "versions": [
+        "v1.0"
+      ]
+    },
+    "IoT_Device": {
+      "versions": [
+        "v5.0"
+      ]
+    },
+    "IoT_Device_Beta": {
+      "versions": [
+        "v5.0_Beta6"
+      ]
+    }
+  },
+  "m5stack_stick_s3": {
+    "FactoryTest_(UIFlow2)": {
+      "versions": [
+        "v2.4.6"
+      ],
+      "merged": true
+    }
   },
   "m5stack_tough": {
-    "FactoryTest": [
-      "v1.0"
-    ],
-    "IoT_Device": [
-      "v3.8",
-      "v3.9",
-      "v3.10",
-      "v4.0",
-      "v4.1",
-      "v4.2",
-      "v4.3",
-      "v4.4",
-      "v4.5",
-      "v4.6",
-      "v4.7",
-      "v5.0"
-    ],
-    "IoT_Device_Beta": [
-      "v5.0_Beta6"
-    ]
+    "FactoryTest": {
+      "versions": [
+        "v1.0"
+      ]
+    },
+    "IoT_Device": {
+      "versions": [
+        "v3.8",
+        "v3.9",
+        "v3.10",
+        "v4.0",
+        "v4.1",
+        "v4.2",
+        "v4.3",
+        "v4.4",
+        "v4.5",
+        "v4.6",
+        "v4.7",
+        "v5.0"
+      ]
+    },
+    "IoT_Device_Beta": {
+      "versions": [
+        "v5.0_Beta6"
+      ]
+    }
+  },
+  "m5stack_unit_c6l": {
+    "FactoryTest_(Meshtastic)": {
+      "versions": [
+        "2.7.26.54e0d8d_Beta"
+      ],
+      "merged": true
+    }
   },
   "m5station": {
-    "FactoryTest": [
-      "v1.0"
-    ],
-    "IoT_Device": [
-      "v4.0",
-      "v4.1",
-      "v4.2",
-      "v4.3",
-      "v4.4",
-      "v4.5",
-      "v4.6",
-      "v4.7",
-      "v5.0"
-    ],
-    "IoT_Device_Beta": [
-      "v5.0_Beta6"
-    ]
+    "FactoryTest": {
+      "versions": [
+        "v1.0"
+      ]
+    },
+    "IoT_Device": {
+      "versions": [
+        "v4.0",
+        "v4.1",
+        "v4.2",
+        "v4.3",
+        "v4.4",
+        "v4.5",
+        "v4.6",
+        "v4.7",
+        "v5.0"
+      ]
+    },
+    "IoT_Device_Beta": {
+      "versions": [
+        "v5.0_Beta6"
+      ]
+    }
   },
   "m5stick_c_plus": {
-    "FactoryTest": [
-      "v1.0"
-    ],
-    "Fake_NTP_Server": [
-      "v3.2"
-    ],
-    "IoT_Device": [
-      "v3.9",
-      "v3.10",
-      "v4.0",
-      "v4.1",
-      "v4.2",
-      "v4.3",
-      "v4.4",
-      "v4.5",
-      "v4.6",
-      "v4.7",
-      "v5.0"
-    ],
-    "IoT_Device_Beta": [
-      "v5.0_Beta6"
-    ]
+    "FactoryTest": {
+      "versions": [
+        "v1.0"
+      ]
+    },
+    "Fake_NTP_Server": {
+      "versions": [
+        "v3.2"
+      ]
+    },
+    "IoT_Device": {
+      "versions": [
+        "v3.9",
+        "v3.10",
+        "v4.0",
+        "v4.1",
+        "v4.2",
+        "v4.3",
+        "v4.4",
+        "v4.5",
+        "v4.6",
+        "v4.7",
+        "v5.0"
+      ]
+    },
+    "IoT_Device_Beta": {
+      "versions": [
+        "v5.0_Beta6"
+      ]
+    }
   },
   "m5stick_c_plus2": {
-    "FactoryTest": [
-      "v1.0"
-    ],
-    "IoT_Device": [
-      "v5.0"
-    ],
-    "IoT_Device_Beta": [
-      "v5.0_Beta6"
-    ]
+    "FactoryTest": {
+      "versions": [
+        "v1.0"
+      ]
+    },
+    "IoT_Device": {
+      "versions": [
+        "v5.0"
+      ]
+    },
+    "IoT_Device_Beta": {
+      "versions": [
+        "v5.0_Beta6"
+      ]
+    }
   },
   "wio_terminal": {
-    "FactoryTest": [
-      "v1.0"
-    ],
-    "IoT_Device": [
-      "v3.9",
-      "v3.10",
-      "v4.0",
-      "v4.1",
-      "v4.2",
-      "v4.3",
-      "v4.4",
-      "v4.5",
-      "v4.6",
-      "v4.7",
-      "v5.0"
-    ],
-    "IoT_Device_Beta": [
-      "v5.0_Beta6"
-    ]
+    "FactoryTest": {
+      "versions": [
+        "v1.0"
+      ],
+      "merged": true
+    },
+    "IoT_Device": {
+      "versions": [
+        "v3.9",
+        "v3.10",
+        "v4.0",
+        "v4.1",
+        "v4.2",
+        "v4.3",
+        "v4.4",
+        "v4.5",
+        "v4.6",
+        "v4.7",
+        "v5.0"
+      ],
+      "merged": true
+    },
+    "IoT_Device_Beta": {
+      "versions": [
+        "v5.0_Beta6"
+      ],
+      "merged": true
+    }
   },
   "wio_tracker_1110": {
-    "Default_Firmware": [
-      "v1.0"
-    ]
+    "Default_Firmware": {
+      "versions": [
+        "v1.0"
+      ]
+    }
   }
 }

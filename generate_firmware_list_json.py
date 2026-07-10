@@ -47,8 +47,16 @@ def main():
 		firmware_list = sorted(map(os.path.normpath, glob.glob("*/", root_dir=os.path.join(BASE_PATH, device))))
 		result[device] = {}
 		for firmware in firmware_list:
-			versions = list(map(os.path.normpath, glob.glob("*/", root_dir=os.path.join(BASE_PATH, device, firmware))))
-			result[device][firmware] = sorted(versions, key=cmp_to_key(versionCompareTo))
+			versions = sorted(
+				map(os.path.normpath, glob.glob("*/", root_dir=os.path.join(BASE_PATH, device, firmware))),
+				key=cmp_to_key(versionCompareTo)
+			)
+			is_merged = False
+			if versions:
+				first_version_path = os.path.join(BASE_PATH, device, firmware, versions[0])
+				bin_files = [f for f in os.listdir(first_version_path) if f.endswith('.bin')]
+				is_merged = len(bin_files) == 1
+			result[device][firmware] = {"versions": versions, "merged": True} if is_merged else {"versions": versions}
 	
 	output_path = os.path.join(BASE_PATH, "firmware.json")
 	with open(output_path, 'w') as f:

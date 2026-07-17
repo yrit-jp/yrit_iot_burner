@@ -4,6 +4,11 @@
       "versions": [
         "v1.0"
       ]
+    },
+    "IoT_Device": {
+      "versions": [
+        "v6.0"
+      ]
     }
   },
   "esp32_devkit": {
@@ -23,7 +28,8 @@
         "v4.5",
         "v4.6",
         "v4.7",
-        "v5.0"
+        "v5.0",
+        "v6.0"
       ]
     },
     "IoT_Device_Beta": {
@@ -41,7 +47,8 @@
     },
     "IoT_Device": {
       "versions": [
-        "v5.0"
+        "v5.0",
+        "v6.0"
       ]
     },
     "IoT_Device_Beta": {
@@ -66,7 +73,8 @@
         "v4.5",
         "v4.6",
         "v4.7",
-        "v5.0"
+        "v5.0",
+        "v6.0"
       ]
     },
     "IoT_Device_Beta": {
@@ -83,7 +91,8 @@
     },
     "IoT_Device": {
       "versions": [
-        "v5.0"
+        "v5.0",
+        "v6.0"
       ]
     },
     "IoT_Device_Beta": {
@@ -114,7 +123,8 @@
         "v4.5",
         "v4.6",
         "v4.7",
-        "v5.0"
+        "v5.0",
+        "v6.0"
       ]
     },
     "IoT_Device_Beta": {
@@ -151,7 +161,8 @@
         "v4.5",
         "v4.6",
         "v4.7",
-        "v5.0"
+        "v5.0",
+        "v6.0"
       ]
     },
     "IoT_Device_Beta": {
@@ -174,7 +185,8 @@
         "v4.5",
         "v4.6",
         "v4.7",
-        "v5.0"
+        "v5.0",
+        "v6.0"
       ]
     },
     "IoT_Device_Beta": {
@@ -191,7 +203,8 @@
     },
     "IoT_Device": {
       "versions": [
-        "v5.0"
+        "v5.0",
+        "v6.0"
       ]
     },
     "IoT_Device_Beta": {
@@ -206,6 +219,11 @@
         "v2.4.6"
       ],
       "merged": true
+    },
+    "IoT_Device": {
+      "versions": [
+        "v6.0"
+      ]
     }
   },
   "m5stack_tough": {
@@ -227,7 +245,8 @@
         "v4.5",
         "v4.6",
         "v4.7",
-        "v5.0"
+        "v5.0",
+        "v6.0"
       ]
     },
     "IoT_Device_Beta": {
@@ -242,6 +261,11 @@
         "2.7.26.54e0d8d_Beta"
       ],
       "merged": true
+    },
+    "IoT_Device": {
+      "versions": [
+        "v6.0"
+      ]
     }
   },
   "m5station": {
@@ -260,7 +284,8 @@
         "v4.5",
         "v4.6",
         "v4.7",
-        "v5.0"
+        "v5.0",
+        "v6.0"
       ]
     },
     "IoT_Device_Beta": {
@@ -292,7 +317,8 @@
         "v4.5",
         "v4.6",
         "v4.7",
-        "v5.0"
+        "v5.0",
+        "v6.0"
       ]
     },
     "IoT_Device_Beta": {
@@ -309,7 +335,8 @@
     },
     "IoT_Device": {
       "versions": [
-        "v5.0"
+        "v5.0",
+        "v6.0"
       ]
     },
     "IoT_Device_Beta": {
@@ -337,7 +364,8 @@
         "v4.5",
         "v4.6",
         "v4.7",
-        "v5.0"
+        "v5.0",
+        "v6.0"
       ],
       "merged": true
     },
@@ -352,6 +380,11 @@
     "Default_Firmware": {
       "versions": [
         "v1.0"
+      ]
+    },
+    "IoT_Device": {
+      "versions": [
+        "v6.0"
       ]
     }
   }

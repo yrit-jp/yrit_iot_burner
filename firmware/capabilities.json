@@ -1,0 +1,188 @@
+{
+  "arduino_nesso_n1": {
+    "IoT_Device": {
+      "interfaces": ["i2c", "digital-io", "analog-io", "pulse-count", "modbus-rtu"],
+      "communications": [
+        { "protocol": "mqtt", "transport": ["wifi"] },
+        { "protocol": "http", "transport": ["wifi"] },
+        { "protocol": "ftp", "transport": ["wifi"] },
+        { "protocol": "ambient", "transport": ["wifi"] },
+        { "protocol": "lorawan", "transport": ["lora"] }
+      ]
+    }
+  },
+  "esp32_devkit": {
+    "IoT_Device": {
+      "interfaces": ["i2c", "digital-io", "analog-io", "pulse-count"],
+      "communications": [
+        { "protocol": "mqtt", "transport": ["wifi"] },
+        { "protocol": "http", "transport": ["wifi"] },
+        { "protocol": "ftp", "transport": ["wifi"] },
+        { "protocol": "ambient", "transport": ["wifi"] }
+      ]
+    }
+  },
+  "lilygo_t_display_s3_pro": {
+    "IoT_Device": {
+      "interfaces": ["i2c", "modbus-rtu"],
+      "communications": [
+        { "protocol": "mqtt", "transport": ["wifi"] },
+        { "protocol": "http", "transport": ["wifi"] },
+        { "protocol": "ftp", "transport": ["wifi"] },
+        { "protocol": "ambient", "transport": ["wifi"] }
+      ]
+    }
+  },
+  "m5stack_atom_s3": {
+    "IoT_Device": {
+      "interfaces": ["i2c", "digital-io", "analog-io", "pulse-count", "modbus-rtu"],
+      "communications": [
+        { "protocol": "mqtt", "transport": ["wifi"] },
+        { "protocol": "http", "transport": ["wifi"] },
+        { "protocol": "ftp", "transport": ["wifi"] },
+        { "protocol": "ambient", "transport": ["wifi"] }
+      ]
+    }
+  },
+  "m5stack_atom_s3r": {
+    "IoT_Device": {
+      "interfaces": ["i2c", "digital-io", "analog-io", "pulse-count", "modbus-rtu"],
+      "communications": [
+        { "protocol": "mqtt", "transport": ["wifi"] },
+        { "protocol": "http", "transport": ["wifi"] },
+        { "protocol": "ftp", "transport": ["wifi"] },
+        { "protocol": "ambient", "transport": ["wifi"] }
+      ]
+    }
+  },
+  "m5stack_basic": {
+    "IoT_Device": {
+      "interfaces": ["i2c", "digital-io", "analog-io", "pulse-count", "modbus-rtu"],
+      "communications": [
+        { "protocol": "mqtt", "transport": ["wifi", "ethernet"] },
+        { "protocol": "http", "transport": ["wifi", "ethernet"] },
+        { "protocol": "ftp", "transport": ["wifi", "ethernet"] },
+        { "protocol": "ambient", "transport": ["wifi", "ethernet"] }
+      ]
+    }
+  },
+  "m5stack_core2": {
+    "IoT_Device": {
+      "interfaces": ["i2c"],
+      "communications": [
+        { "protocol": "mqtt", "transport": ["wifi"] },
+        { "protocol": "http", "transport": ["wifi"] },
+        { "protocol": "ftp", "transport": ["wifi"] },
+        { "protocol": "ambient", "transport": ["wifi"] }
+      ]
+    }
+  },
+  "m5stack_core_s3": {
+    "IoT_Device": {
+      "interfaces": ["i2c", "digital-io", "analog-io", "pulse-count", "modbus-rtu", "camera"],
+      "communications": [
+        { "protocol": "mqtt", "transport": ["wifi"] },
+        { "protocol": "http", "transport": ["wifi"] },
+        { "protocol": "ftp", "transport": ["wifi"] },
+        { "protocol": "ambient", "transport": ["wifi"] }
+      ]
+    }
+  },
+  "m5stack_core_s3_se": {
+    "IoT_Device": {
+      "interfaces": ["i2c", "digital-io", "analog-io", "pulse-count", "modbus-rtu"],
+      "communications": [
+        { "protocol": "mqtt", "transport": ["wifi"] },
+        { "protocol": "http", "transport": ["wifi"] },
+        { "protocol": "ftp", "transport": ["wifi"] },
+        { "protocol": "ambient", "transport": ["wifi"] }
+      ]
+    }
+  },
+  "m5stack_stick_s3": {
+    "IoT_Device": {
+      "interfaces": ["i2c"],
+      "communications": [
+        { "protocol": "mqtt", "transport": ["wifi"] },
+        { "protocol": "http", "transport": ["wifi"] },
+        { "protocol": "ftp", "transport": ["wifi"] },
+        { "protocol": "ambient", "transport": ["wifi"] }
+      ]
+    }
+  },
+  "m5stack_tough": {
+    "IoT_Device": {
+      "interfaces": ["i2c", "digital-io", "analog-io", "pulse-count", "modbus-rtu"],
+      "communications": [
+        { "protocol": "mqtt", "transport": ["wifi"] },
+        { "protocol": "http", "transport": ["wifi"] },
+        { "protocol": "ftp", "transport": ["wifi"] },
+        { "protocol": "ambient", "transport": ["wifi"] }
+      ]
+    }
+  },
+  "m5stack_unit_c6l": {
+    "IoT_Device": {
+      "interfaces": ["i2c"],
+      "communications": [
+        { "protocol": "mqtt", "transport": ["wifi"] },
+        { "protocol": "http", "transport": ["wifi"] },
+        { "protocol": "ftp", "transport": ["wifi"] },
+        { "protocol": "ambient", "transport": ["wifi"] },
+        { "protocol": "lorawan", "transport": ["lora"] }
+      ]
+    }
+  },
+  "m5station": {
+    "IoT_Device": {
+      "interfaces": ["i2c", "digital-io", "analog-io", "pulse-count", "modbus-rtu"],
+      "communications": [
+        { "protocol": "mqtt", "transport": ["wifi"] },
+        { "protocol": "http", "transport": ["wifi"] },
+        { "protocol": "ftp", "transport": ["wifi"] },
+        { "protocol": "ambient", "transport": ["wifi"] }
+      ]
+    }
+  },
+  "m5stick_c_plus": {
+    "IoT_Device": {
+      "interfaces": ["i2c", "digital-io", "analog-io", "pulse-count"],
+      "communications": [
+        { "protocol": "mqtt", "transport": ["wifi"] },
+        { "protocol": "http", "transport": ["wifi"] },
+        { "protocol": "ftp", "transport": ["wifi"] },
+        { "protocol": "ambient", "transport": ["wifi"] }
+      ]
+    }
+  },
+  "m5stick_c_plus2": {
+    "IoT_Device": {
+      "interfaces": ["i2c", "digital-io", "analog-io", "pulse-count"],
+      "communications": [
+        { "protocol": "mqtt", "transport": ["wifi"] },
+        { "protocol": "http", "transport": ["wifi"] },
+        { "protocol": "ftp", "transport": ["wifi"] },
+        { "protocol": "ambient", "transport": ["wifi"] }
+      ]
+    }
+  },
+  "wio_terminal": {
+    "IoT_Device": {
+      "interfaces": ["i2c", "digital-io", "analog-io", "pulse-count"],
+      "communications": [
+        { "protocol": "mqtt", "transport": ["wifi"] },
+        { "protocol": "http", "transport": ["wifi"] },
+        { "protocol": "ftp", "transport": ["wifi"] },
+        { "protocol": "ambient", "transport": ["wifi"] }
+      ]
+    }
+  },
+  "wio_tracker_1110": {
+    "IoT_Device": {
+      "interfaces": ["i2c", "digital-io", "analog-io", "modbus-rtu"],
+      "communications": [
+        { "protocol": "lorawan", "transport": ["lora"] }
+      ]
+    }
+  }
+}

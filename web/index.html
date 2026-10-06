@@ -152,6 +152,14 @@
             </div>
           </div>
 
+          <div class="btn btn-secondary card card-size" data-device_name="m5stack_core_s3"
+            data-display_name="m5stack_core_s3_lite" @click="goFirmwareSelectPage">
+            <img :src="getDisplayDeviceImagePath" class="card-img-top device">
+            <div class="card-body p-0">
+              <h5 class="card-title text-center" x-text="getDisplayDeviceNameText"></h5>
+            </div>
+          </div>
+
           <div class="btn btn-secondary card card-size" data-device_name="m5stack_tough" @click="goFirmwareSelectPage">
             <img :src="getDisplayDeviceImagePath" class="card-img-top device">
             <div class="card-body p-0">
@@ -167,6 +175,14 @@
           </div>
 
           <div class="btn btn-secondary card card-size" data-device_name="m5stick_c_plus" @click="goFirmwareSelectPage">
+            <img :src="getDisplayDeviceImagePath" class="card-img-top device">
+            <div class="card-body p-0">
+              <h5 class="card-title text-center" x-text="getDisplayDeviceNameText"></h5>
+            </div>
+          </div>
+
+          <div class="btn btn-secondary card card-size" data-device_name="m5stick_c_plus"
+            data-display_name="m5stick_c_plus_se" @click="goFirmwareSelectPage">
             <img :src="getDisplayDeviceImagePath" class="card-img-top device">
             <div class="card-body p-0">
               <h5 class="card-title text-center" x-text="getDisplayDeviceNameText"></h5>
@@ -237,6 +253,43 @@
         <div class="row d-grid justify-content-center">
           <div class="col p-3 align-self-center">
             <img :src="getDisplaySelectedDeviceImagePath" class="p-4 target-device-image">
+          </div>
+        </div>
+
+        <div class="row d-grid justify-content-center">
+          <div class="col capability-section">
+            <div class="capability-group" x-show="interfaceTags.length > 0">
+              <template x-for="tag in interfaceTags">
+                <span class="capability-badge interface-badge" :title="getInterfaceLabel(tag)">
+                  <i :class="getInterfaceIconClass(tag)"></i>
+                  <span x-text="getInterfaceLabel(tag)"></span>
+                </span>
+              </template>
+            </div>
+            <div class="capability-group" x-show="interfaceTags.length === 0">
+              <span class="capability-badge is-placeholder">
+                <i class="bi bi-question-circle"></i>
+                <span>対応インタフェース情報なし</span>
+              </span>
+            </div>
+
+            <div class="capability-group" x-show="communicationTags.length > 0">
+              <template x-for="comm in communicationTags">
+                <span class="capability-badge communication-badge" :title="getCommunicationLabel(comm.protocol)">
+                  <i :class="getCommunicationIconClass(comm.protocol)"></i>
+                  <span x-text="getCommunicationLabel(comm.protocol)"></span>
+                  <template x-for="t in comm.transport">
+                    <i class="transport-icon" :class="getTransportIconClass(t)" :title="getTransportLabel(t)"></i>
+                  </template>
+                </span>
+              </template>
+            </div>
+            <div class="capability-group" x-show="communicationTags.length === 0">
+              <span class="capability-badge is-placeholder">
+                <i class="bi bi-question-circle"></i>
+                <span>通信方式情報なし</span>
+              </span>
+            </div>
           </div>
         </div>
 

@@ -377,6 +377,61 @@ section {
 }
 
 /****************************************/
+/* 対応インタフェース／通信方式 バッジ    */
+/****************************************/
+
+/* 対応するタグのみ表示する。情報が無い場合は同じ大きさのダミーバッジを表示し、
+   行の高さが変わらないようにすることで FW 切り替え時のレイアウトのズレを防ぐ */
+.capability-section {
+  max-width: min(560px, 100%);
+  margin: 0 auto 10px auto;
+}
+
+.capability-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.capability-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: default;
+}
+
+.capability-badge.interface-badge {
+  background-color: var(--color-yrit-main-light);
+  color: var(--color-yrit-main-hover);
+  border: 1px solid var(--color-yrit-main);
+}
+
+.capability-badge.communication-badge {
+  background-color: var(--color-yrit-accent-light);
+  color: var(--color-yrit-accent-hover);
+  border: 1px solid var(--color-yrit-accent);
+}
+
+.capability-badge.is-placeholder {
+  background-color: #fafafa;
+  color: #bbb;
+  border: 1px dashed #ddd;
+  font-weight: 500;
+}
+
+.capability-badge .transport-icon {
+  font-size: 0.85em;
+  opacity: 0.85;
+}
+
+/****************************************/
 /* ChangeLog ボタン                     */
 /****************************************/
 

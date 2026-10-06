@@ -79,6 +79,31 @@ firmware/
 
 `firmware.json` は `generate_firmware_list_json.py` スクリプトを使用すると `firmware` フォルダの構成に合わせて自動的に生成することができます。
 
+`FIRMWARE_NAME` ディレクトリ直下（`FIRMWARE_VERSION` と同じ階層）に、変更履歴を記載した `CHANGELOG.md` を任意で配置できます。存在しない場合はアプリ側で変更履歴ボタンがグレーアウトするだけなので、配置は任意です。
+
+また、`firmware.json` と同じ `firmware` フォルダ直下に、対応インタフェース／通信方式を記載した `capabilities.json` を1つだけ任意で配置できます。`firmware.json` とは異なり `generate_firmware_list_json.py` では生成されない、手動管理のファイルです。
+
+`capabilities.json` の記述例:
+
+```json
+{
+  "DEVICE_NAME": {
+    "FIRMWARE_NAME": {
+      "interfaces": ["i2c", "digital-io", "analog-io", "pulse-count", "modbus-rtu", "camera"],
+      "communications": [
+        { "protocol": "mqtt", "transport": ["wifi", "ethernet"] },
+        { "protocol": "http", "transport": ["wifi", "ethernet"] },
+        { "protocol": "ftp", "transport": ["wifi", "ethernet"] },
+        { "protocol": "ambient", "transport": ["wifi", "ethernet"] },
+        { "protocol": "lorawan", "transport": ["lora"] }
+      ]
+    }
+  }
+}
+```
+
+`DEVICE_NAME` / `FIRMWARE_NAME` に対応する記載が無い場合は、そのファームウェアは「情報なし」のバッジが表示されます（`interfaces` / `communications` を省略した場合も同様）。`interfaces` / `communications.protocol` / `communications.transport` に指定できる値は今後追加される可能性があります。
+
 ## 👨‍💻 開発者向け
 
 開発環境のセットアップ、ビルド手順については [開発者向けドキュメント](./DEVELOPMENT.md) をご覧ください。

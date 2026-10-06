@@ -31,6 +31,41 @@ const FLASH_ERROR = Utils.createEnum([
 	"FAILED_WRITE",
 ]);
 
+// ファームウェアが対応するインタフェースの表示定義（キーは capabilities.json 内の値と一致させる）
+const INTERFACE_META = {
+	"i2c": { icon: "bi-diagram-3", label: "I2C" },
+	"digital-io": { icon: "bi-toggle-on", label: "Digital Input" },
+	"analog-io": { icon: "bi-sliders", label: "Analog Input" },
+	"pulse-count": { icon: "bi-activity", label: "Pulse Count" },
+	"modbus-rtu": { icon: "bi-diagram-2", label: "Modbus RTU" },
+	"camera": { icon: "bi-camera-fill", label: "Camera" },
+};
+
+// ファームウェアが対応する通信方式の表示定義
+const COMMUNICATION_META = {
+	"mqtt": { icon: "bi-share-fill", label: "MQTT" },
+	"http": { icon: "bi-globe", label: "HTTP" },
+	"ftp": { icon: "bi-folder-symlink-fill", label: "FTP" },
+	"ambient": { icon: "bi-cloud-upload-fill", label: "Ambient" },
+	"lorawan": { icon: "bi-broadcast-pin", label: "LoRaWAN" },
+};
+
+// 通信方式が使用する伝送路の表示定義
+const TRANSPORT_META = {
+	"wifi": { icon: "bi-wifi", label: "WiFi" },
+	"ethernet": { icon: "bi-ethernet", label: "Ethernet" },
+	"lora": { icon: "bi-broadcast", label: "LoRa" },
+};
+
+// META テーブルからアイコンクラス／ラベルを引く共通ヘルパー（未知のキーはフォールバック表示）
+function getMetaIconClass(metaTable, key, fallbackIcon = "bi-tag") {
+	return `bi ${metaTable[key]?.icon ?? fallbackIcon}`;
+}
+
+function getMetaLabel(metaTable, key) {
+	return metaTable[key]?.label ?? key;
+}
+
 // 書き込み中のページ遷移時に警告を出す
 function windowUnloadHandler(e) {
 	e.preventDefault();
@@ -54,10 +89,46 @@ if (window.inElectronPlatform) {
 	g_FirmwareRootPath = await window.api.returnFirmwareRootPath()
 }
 
+// 全デバイス／ファームウェアの対応インタフェース・通信方式メタ情報（capabilities.json）をまとめて取得する
+// ファイルが存在しない、または内容が不正な場合は「情報なし」として扱う
+async function fetchCapabilitiesInfo() {
+	const FILE_PATH = (() => {
+		if (window.location.hostname.endsWith("github.io")) {
+			// For GitHub Pages
+			const GITHUB_USER = window.location.hostname.split(".")[0];
+			const GITHUB_REPO = window.location.pathname.split("/")[1];
+			const BRANCH = "firmware";
+			return [
+				`https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${BRANCH}/`,
+				`firmware/capabilities.json`
+			].join("");
+		} else {
+			if (window.inElectronPlatform) {
+				return resolve(g_FirmwareRootPath, "firmware/capabilities.json");
+			}
+			else {
+				return new URL("firmware/capabilities.json", g_FirmwareRootPath).href;
+			}
+		}
+	})();
+
+	try {
+		const response = await fetch(FILE_PATH);
+		if (!response.ok) {
+			return {};
+		}
+		const data = await response.json();
+		return (typeof data === "object" && data !== null) ? data : {};
+	} catch (err) {
+		return {};
+	}
+}
+
 document.addEventListener('alpine:init', () => {
 	Alpine.data('app', () => ({
 		firmwareInfo: {},				// ファームウェア情報が入った JSON オブジェクト
-		selectedDeviceName: "unknown",	// 選択中のデバイス名
+		selectedDeviceName: "unknown",	// 選択中のデバイス名（ファームウェア参照先）
+		selectedDisplayName: "unknown",	// 選択中のデバイスの表示名（画像の表示用）
 		selectableFirmwareName: [],		// 選択可能な FW 名のリスト
 		selectedFirmware: "",			// 選択された FW 名
 		selectableFirmwareVersion: [],	// 選択可能な FW バージョンのリスト
@@ -69,6 +140,9 @@ document.addEventListener('alpine:init', () => {
 		existChangeLog: false,			// 変更履歴ファイルが存在するかどうかのフラグ
 		changeLogHoverMessage: "",		// 変更履歴ボタンにホバーしたときのメッセージ
 		changeLogHtml: "",				// 変更履歴の html 文字列
+		capabilitiesInfo: {},			// 対応インタフェース／通信方式の情報が入った JSON オブジェクト（capabilities.json）
+		interfaceTags: [],				// 選択中 FW が対応するインタフェースのリスト（詳細画面表示用）
+		communicationTags: [],			// 選択中 FW が対応する通信方式のリスト（詳細画面表示用）
 
 		async init() {
 			console.log("Ready!");
@@ -101,6 +175,9 @@ document.addEventListener('alpine:init', () => {
 
 			this.firmwareInfo = await response.json();
 			// console.log(this.firmwareInfo);
+
+			// 対応インタフェース／通信方式の情報（capabilities.json）を取得
+			this.capabilitiesInfo = await fetchCapabilitiesInfo();
 		},
 
 		async checkChangeLog(selectedDeviceName, selectedFirmware) {
@@ -151,6 +228,13 @@ document.addEventListener('alpine:init', () => {
 			}
 		},
 
+		checkCapabilities(selectedDeviceName, selectedFirmware) {
+			// 選択中デバイス・ファームウェアの対応インタフェース・通信方式を反映
+			const caps = this.capabilitiesInfo[selectedDeviceName]?.[selectedFirmware] ?? {};
+			this.interfaceTags = Array.isArray(caps.interfaces) ? caps.interfaces : [];
+			this.communicationTags = Array.isArray(caps.communications) ? caps.communications : [];
+		},
+
 		async changeTargetFirmware() {
 			// 選択ファームウェアの更新
 			this.selectedFirmware = this.$el.value;
@@ -165,6 +249,8 @@ document.addEventListener('alpine:init', () => {
 
 			// CHANGELOG.md の確認
 			await this.checkChangeLog(this.selectedDeviceName, this.selectedFirmware);
+			// 対応インタフェース・通信方式の確認
+			this.checkCapabilities(this.selectedDeviceName, this.selectedFirmware);
 		},
 
 		changeTargetVersion() {
@@ -173,6 +259,8 @@ document.addEventListener('alpine:init', () => {
 
 		async goFirmwareSelectPage() {
 			this.selectedDeviceName = this.$el.dataset.device_name;
+			// 外観違いのみのデバイスは data-display_name で表示名を指定（ファームウェアは device_name のものを共有）
+			this.selectedDisplayName = this.$el.dataset.display_name ?? this.selectedDeviceName;
 
 			this.$refs.page1.classList.add("slide");
 			this.$refs.page2.classList.add("slide");
@@ -184,6 +272,9 @@ document.addEventListener('alpine:init', () => {
 
 			// CHANGELOG.md の確認
 			await this.checkChangeLog(this.selectedDeviceName, this.selectedFirmware);
+
+			// 対応インタフェース・通信方式の確認
+			this.checkCapabilities(this.selectedDeviceName, this.selectedFirmware);
 
 			// 選択可能なバージョンをファームウェアに合わせてセット
 			this.selectableFirmwareVersion = this.firmwareInfo[this.selectedDeviceName][this.selectedFirmware].versions;
@@ -1032,7 +1123,8 @@ document.addEventListener('alpine:init', () => {
 		},
 
 		getDisplayDeviceNameText() {
-			let deviceName = this.$el.closest("div[data-device_name]").dataset.device_name;
+			const dataset = this.$el.closest("div[data-device_name]").dataset;
+			let deviceName = dataset.display_name ?? dataset.device_name;
 			// 特別な語句をあらかじめ置換
 			const exceptions = {
 				"esp32": "ESP32",
@@ -1048,17 +1140,42 @@ document.addEventListener('alpine:init', () => {
 			}
 
 			// 通常の大文字化ルール適用
-			deviceName = deviceName.replace(/(^\w|_\w|\d\w)/g, match => match.toUpperCase());
+			deviceName = deviceName.replace(/(^\w|_\w|\d[a-zA-Z])/g, match => match.toUpperCase());
 			return deviceName.replaceAll('_', ' ');
 		},
 
 		getDisplayDeviceImagePath() {
-			const deviceName = (this.$el.closest("div[data-device_name]").dataset.device_name);
+			const dataset = this.$el.closest("div[data-device_name]").dataset;
+			const deviceName = dataset.display_name ?? dataset.device_name;
 			return `./images/device/${deviceName}.svg`;
 		},
 
 		getDisplaySelectedDeviceImagePath() {
-			return `./images/device/${this.selectedDeviceName}.svg`;
+			return `./images/device/${this.selectedDisplayName}.svg`;
+		},
+
+		getInterfaceIconClass(tag) {
+			return getMetaIconClass(INTERFACE_META, tag);
+		},
+
+		getInterfaceLabel(tag) {
+			return getMetaLabel(INTERFACE_META, tag);
+		},
+
+		getCommunicationIconClass(protocol) {
+			return getMetaIconClass(COMMUNICATION_META, protocol);
+		},
+
+		getCommunicationLabel(protocol) {
+			return getMetaLabel(COMMUNICATION_META, protocol);
+		},
+
+		getTransportIconClass(transport) {
+			return getMetaIconClass(TRANSPORT_META, transport, "bi-question-circle");
+		},
+
+		getTransportLabel(transport) {
+			return getMetaLabel(TRANSPORT_META, transport);
 		},
 
 		getDisplayFirmwareNameText() {

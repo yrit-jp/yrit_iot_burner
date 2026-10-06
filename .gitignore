@@ -3,6 +3,7 @@
 /web/firmware/*
 
 !/web/firmware/.gitkeep
+!/web/firmware/capabilities.json
 /web/styles/animate.css
 /web/firmware.json
 /electron/modules

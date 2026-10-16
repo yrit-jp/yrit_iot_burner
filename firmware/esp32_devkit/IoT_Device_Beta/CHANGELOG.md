@@ -3,6 +3,102 @@
 このファームウェアの主な変更点は全てこのファイルに記録されます。  
 フォーマットは [Keep a Changelog](https://keepachangelog.com/) に基づいています。
 
+## [ v6.2 Beta1 ] - 2026-10-15
+
+#### ✨ 機能追加
+
+- M5Stack Unit C6L に情報ページ（FW バージョン・送信間隔・devID / WiFi 電波強度・SSID・IP アドレス）を追加
+
+#### 📝 機能変更
+
+- ESP32 系デバイスで NTP 時刻同期の成功率を改善（応答がない場合に一定間隔で再要求するよう変更）
+- デバイス追加ドキュメント（HOW_TO_ADD_NEW_DEVICE.md）をコードに合わせて修正
+
+#### 🐞 不具合修正
+
+- ESP32 系デバイスで WiFi の固定 IP 設定が反映されず、DHCP で接続される不具合の修正（v6.0 以降）
+- M5Stack Unit C6L で MQTT 等の未送信データ数が表示されない不具合の修正
+
+## [ v6.1 Beta1 ] - 2026-10-05
+
+#### 📝 機能変更
+
+- デフォルトの送信間隔（TX_INTERVAL_SEC）を 5 秒から 60 秒に変更
+- MQTT ブローカーのソケットタイムアウト時間を延長
+
+#### 🐞 不具合修正
+
+- 電波状況が悪い環境で WiFi 再接続がうまくいかない不具合の修正
+
+## [ v6.0 Beta2 ] - 2026-05-13
+
+#### ✨ 機能追加
+
+- Wio Tracker 1110 (nRF52840 + LoRaWAN) に対応
+- LoRaWAN 送信モジュール (iot_tx_lorawan) を新規追加
+- hal_interface.h に ILoRaWanControl インターフェースを追加
+- iot_tx.h / iot_tx.cpp に LoRaWAN ログカテゴリを追加
+- LoRaWAN 表示タイミング定数を追加
+- system_sleep() 実装を追加
+
+#### 📝 機能変更
+
+- hal.h に _ENABLE_ / _DISABLE_ マクロを追加し各フラグを値で制御するよう変更
+- hal_interface.h の一部メソッドを純粋仮想関数から仮想関数に変更
+- 各ボード HAL ヘッダの仮想メソッドに override キーワードを追加
+- display.h に TFT カラー定数を追加
+- setting_parameters.cpp の WAIT_00_SEC / BATCH_DATA_SEND を WiFi/LAN がある場合のみ設定するよう変更
+- iot_tx_http.cpp / iot_tx_mqtt.cpp の toDouble() を std::strtod() に変更
+- i2cセンサ名を修正（DS248x アドレス文字列の角括弧を削除、TCA9548A デバイス名の余分な \_ を削除）
+- いくつかのライブラリで互換性保持のための修正
+
+#### 🐞 不具合修正
+
+- 条件コンパイルが一部正しくなかった不具合の修正
+- iot_tx.cpp の \_DEBUG_PREFIX に .c_str() が欠落していた不具合の修正
+- getChipUUID() で UUID が短くなる場合がある不具合の修正
+
+## [ v6.0 Beta1 ] - 2026-01-30
+
+#### ✨ 機能追加
+
+- MAX31850K（1-wire）に対応
+- MQTT/FTP ハートビートに診断情報（稼働時間・空きヒープ・最小ヒープ）を追加
+- ASCIIアート表示機能を追加
+
+#### 📝 機能変更
+
+- ESP32 Arduino Core 3.x に対応（Timer API 移行、esp_mac.h 追加）
+- WatchDog Timer の初期化タイミングを endSetup() に移動、タイムアウト 120 秒に変更
+- 全デバイスで WDT 再初期化処理を追加
+- ミューテックス処理の刷新
+- ペナルティ待機処理を PenaltyHelper クラスに分離して共通化
+- 送信処理のリファクタリング（バッファ格納処理の共通化）
+- C++ 代替トークンへの統一 (`!`, `&&`, `||` → `not`, `and`, `or`)
+- パラメータ取得処理を getParameter() のデフォルト値付き呼び出しに統一
+- 描画処理の最適化とコード構造の改善
+  - DisplayPage の命名規則を改善
+  - センサー値表示処理のテンプレート関数を統一
+  - WiFi ステータスメッセージ表示の最適化
+  - 各解像度ファイル間でのコード構造を統一
+- ディスプレイ処理の最適化と WDT 設定の改善
+- display_override のタスク優先度を 25 から 24 に修正（有効範囲: 0-24）
+- FTP 画像送信の std::vector 値渡しを const 参照に変更
+- MQTT バッファサイズの調整
+- Ezo_I2c_lib をアップデート
+- ビルドスクリプト・コンパイルオプションの改善
+
+#### 🐞 不具合修正
+
+- LilyGo がハングアップする不具合の修正
+- 描画処理のフォントサイズ縮小ループにおける uint32_t アンダーフロー防止
+- Zigbee API フレーム構築時のバッファオーバーフロー防止
+- 設定初期化で FORMATTED が FAILED を上書きする不具合の修正
+- I2C センサ (A02YYUW) のチェックサム検証で return が欠落していた不具合の修正
+- TCS34725 の clear==0 時のゼロ除算防止
+- LAN 設定のパラメータキーが正しく参照されていない不具合の修正
+- modbus_manager のバグ修正
+
 ## [ v5.0 Beta6 ] - 2025-11-13
 
 #### ✨ 機能追加
